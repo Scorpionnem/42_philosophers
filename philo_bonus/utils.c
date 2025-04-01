@@ -6,19 +6,30 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:27:22 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/29 13:28:20 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/03/31 11:06:00 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	*ft_error(char *str)
+void	close_params(t_params *params)
+{
+	if (params->pid)
+		free(params->pid);
+	sem_close(params->forks);
+	sem_close(params->print);
+	sem_close(params->touch_kill);
+	sem_close(params->is_running);
+	pthread_join(params->waitphilos, NULL);
+}
+
+void	*ft_error(const char *str)
 {
 	printf("%s", str);
 	return (NULL);
 }
 
-int	ft_isdigitstr(char *str)
+int	ft_isdigitstr(const char *str)
 {
 	int	i;
 
@@ -60,4 +71,15 @@ long long int	ft_atoll(const char *nptr)
 	if (minus_count == 1)
 		return (nb * -1);
 	return (nb);
+}
+
+sem_t	*open_sem(const char *sem_name, int startval)
+{
+	sem_t	*res;
+
+	sem_unlink(sem_name);
+	res = sem_open(sem_name, O_CREAT, 0644, startval);
+	if (res == SEM_FAILED)
+		return (NULL);
+	return (res);
 }

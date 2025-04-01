@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:29:04 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/29 19:44:55 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/03/31 10:58:40 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,14 @@ static void	*philo_checkhimself(void *ptr)
 	{
 		if (get_current_time() - philo->last_eat >= philo->params->time_td)
 		{
-			print_message("died", philo->params, philo);
+			print_message(MSG_DIED, philo->params, philo);
 			sem_post(philo->params->is_running);
 			break ;
 		}
 		if (philo->times_eaten >= philo->params->eat_amount
 			&& philo->params->eat_amount != -1)
 		{
-			print_message("\033[0;92mfinished eating\033[0m",
-				philo->params, philo);
+			print_message(MSG_FINISH, philo->params, philo);
 			philo->is_running = 0;
 			break ;
 		}
@@ -45,7 +44,7 @@ static int	start_threads(t_philo *philo)
 		sem_close(philo->params->forks);
 		sem_close(philo->params->print);
 		sem_close(philo->params->is_running);
-		sem_close(philo->params->killsem);
+		sem_close(philo->params->touch_kill);
 		return (0);
 	}
 	return (1);
@@ -78,12 +77,12 @@ int	philo_routine(t_params *params, int id)
 		take_fork(params, &philo);
 		eat(params, &philo);
 		p_sleep(params, &philo);
-		print_message("is thinking", params, &philo);
+		print_message(MSG_THINK, params, &philo);
 	}
 	sem_close(params->forks);
 	sem_close(params->print);
 	sem_close(params->is_running);
-	sem_close(params->killsem);
+	sem_close(params->touch_kill);
 	pthread_join(philo.checkhimselfthread, NULL);
 	exit(0);
 }

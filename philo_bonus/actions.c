@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 14:30:05 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/29 16:29:33 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/03/31 11:14:19 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ void	print_message(const char *str, t_params *params, t_philo *philo)
 void	take_fork(t_params *params, t_philo *philo)
 {
 	sem_wait(params->forks);
-	print_message("has taken a fork", params, philo);
+	print_message(MSG_FORK, params, philo);
 }
 
-void	release_fork(t_params *params)
+static void	release_fork(t_params *params)
 {
 	sem_post(params->forks);
 }
 
 void	eat(t_params *params, t_philo *philo)
 {
-	print_message("is eating", params, philo);
+	print_message(MSG_EAT, params, philo);
 	philo->last_eat = get_current_time();
 	philo->times_eaten++;
 	mssleep(params->time_te, philo);
@@ -49,6 +49,6 @@ void	eat(t_params *params, t_philo *philo)
 
 void	p_sleep(t_params *params, t_philo *philo)
 {
-	print_message("is sleeping", params, philo);
+	print_message(MSG_SLEEP, params, philo);
 	mssleep(params->time_ts, philo);
 }

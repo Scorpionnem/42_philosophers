@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/03/31 10:52:09 by mbatty            #+#    #+#              #
+#    Updated: 2025/03/31 10:52:10 by mbatty           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = philo
 
 SOURCES =	main.c init_struct.c lst_philo.c utils.c routine.c routine_utils.c exit_utils.c philo_utils.c

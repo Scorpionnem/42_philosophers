@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 09:47:53 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/29 19:27:12 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/03/31 11:07:18 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_params
 	sem_t			*forks;
 	sem_t			*is_running;
 	sem_t			*print;
-	sem_t			*killsem;
+	sem_t			*touch_kill;
 	int				active;
 	int				philos;
 	int				eat_amount;
@@ -57,13 +57,30 @@ typedef struct s_philo
 # define RUN_SEM "/run_semaphore"
 # define KILL_SEM "/kill_semaphore"
 
+# define INVALID_ARGSC "Error\nInvalid amount of arguments\n"
+# define INVALID_ARGS "Error\nInvalid arguments\n"
+# define SEM_FAIL_FORKS "Error\nFailed to open forks semaphore\n"
+# define SEM_FAIL_PRINT "Error\nFailed to open print semaphore\n"
+# define SEM_FAIL_DEATH "Error\nFailed to open death check semaphore\n"
+# define SEM_FAIL_KILL "Error\nFailed to open kill check semaphore\n"
+# define EXEC_ERROR "Error\nAn error occured when executing the program\n"
+
+# define MSG_FORK "has taken a fork"
+# define MSG_EAT "is eating"
+# define MSG_SLEEP "is sleeping"
+# define MSG_THINK "is thinking"
+# define MSG_DIED "died"
+# define MSG_FINISH "\033[0;92mfinished eating\033[0m"
+
 //params.c
 int				init_params(int ac, char **av, t_params *params);
 
 //utils.c
-void			*ft_error(char *str);
+void			*ft_error(const char *str);
 long long int	ft_atoll(const char *nptr);
-int				ft_isdigitstr(char *str);
+int				ft_isdigitstr(const char *str);
+sem_t			*open_sem(const char *sem_name, int startval);
+void			close_params(t_params *params);
 
 //time_utils.c
 long long int	get_current_time(void);

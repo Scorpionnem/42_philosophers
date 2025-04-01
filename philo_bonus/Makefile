@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/03/31 10:49:27 by mbatty            #+#    #+#              #
+#    Updated: 2025/03/31 10:54:25 by mbatty           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = philo_bonus
 
 SOURCES =	main.c params.c utils.c time_utils.c actions.c philos.c
@@ -5,7 +17,7 @@ SOURCES =	main.c params.c utils.c time_utils.c actions.c philos.c
 OBJECTS = $(SOURCES:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra
 
 %.o : %.c
 		@$(CC) $(CFLAGS) -o $@ -c $<
