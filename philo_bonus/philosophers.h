@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 09:47:53 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/31 11:07:18 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/01 12:54:14 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void			close_params(t_params *params);
 
 //time_utils.c
 long long int	get_current_time(void);
-void			mssleep(int time, t_philo *philo);
+int				mssleep(int time, t_philo *philo);
 
 //actions.c
 void			p_sleep(t_params *params, t_philo *philo);

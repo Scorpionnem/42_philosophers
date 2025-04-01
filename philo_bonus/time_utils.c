@@ -6,13 +6,13 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:28:47 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/31 10:23:17 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/01 12:54:01 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	mssleep(int time, t_philo *philo)
+int	mssleep(int time, t_philo *philo)
 {
 	long long int	start;
 	int				i;
@@ -24,8 +24,9 @@ void	mssleep(int time, t_philo *philo)
 	{
 		usleep(10);
 		if (!philo->is_running)
-			return ;
+			return (0);
 	}
+	return (1);
 }
 
 long long int	get_current_time(void)

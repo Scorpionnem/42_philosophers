@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:01:07 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/31 11:12:41 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/01 12:56:52 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	*wait_philos(void *ptr)
 	sem_wait(params->touch_kill);
 	while (i < params->philos)
 	{
-		if (params->kill)
+		if (params->kill && params->pid[i] > 0)
 			kill(params->pid[i], SIGKILL);
 		i++;
 	}

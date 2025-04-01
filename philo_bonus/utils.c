@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:27:22 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/31 11:06:00 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/01 12:53:38 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	close_params(t_params *params)
 {
 	if (params->pid)
 		free(params->pid);
+	pthread_join(params->waitphilos, NULL);
 	sem_close(params->forks);
 	sem_close(params->print);
 	sem_close(params->touch_kill);
 	sem_close(params->is_running);
-	pthread_join(params->waitphilos, NULL);
 }
 
 void	*ft_error(const char *str)

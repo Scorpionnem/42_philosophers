@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:29:04 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/31 10:58:40 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/01 10:56:08 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ int	philo_routine(t_params *params, int id)
 		p_sleep(params, &philo);
 		print_message(MSG_THINK, params, &philo);
 	}
+	pthread_join(philo.checkhimselfthread, NULL);
 	sem_close(params->forks);
 	sem_close(params->print);
 	sem_close(params->is_running);
 	sem_close(params->touch_kill);
-	pthread_join(philo.checkhimselfthread, NULL);
 	exit(0);
 }
