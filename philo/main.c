@@ -5,115 +5,100 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/21 09:58:22 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/29 13:24:53 by mbatty           ###   ########.fr       */
+/*   Created: 2025/03/29 13:01:07 by mbatty            #+#    #+#             */
+/*   Updated: 2025/04/03 11:00:52 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-t_philo	*set_philos(t_params *params)
+static int	start_philos(t_params *params)
 {
-	int		i;
-	t_philo	*philos;
-	t_philo	*newborn;
+	t_philo	*philo;
 
-	i = 1;
-	philos = NULL;
-	while (i <= params->philos)
+	philo = params->philos;
+	pthread_mutex_lock(&params->wait_start);
+	while (philo)
 	{
-		newborn = new_philo(params, i);
-		if (!newborn)
-		{
-			free_all(philos);
-			return (NULL);
-		}
-		add_philo_back(&philos, newborn);
-		i++;
+		if (pthread_create(&philo->thread, NULL, philo_routine, philo) != 0)
+			return (0);
+		philo = philo->next_philo;
 	}
-	newborn = philos;
-	while (newborn->next_philo)
+	pthread_mutex_unlock(&params->wait_start);
+	return (1);
+}
+
+void	close_params(t_params *params)
+{
+	t_philo	*tmp;
+
+	tmp = params->philos;
+	while (tmp)
 	{
-		newborn->next_philo->left_fork = newborn->right_fork;
-		newborn = newborn->next_philo;
+		pthread_join(tmp->thread, NULL);
+		tmp = tmp->next_philo;
 	}
-	philos->left_fork = last_philo(philos)->right_fork;
-	return (philos);
+	free_all(params->philos);
 }
 
-int	check_active_routine(t_params *params)
+static void	stop_sim(t_params *params, t_philo *cur_philo, t_reason reason)
 {
-	int	value;
-
-	value = 0;
-	pthread_mutex_lock(&(*params).active_mutex);
-	if (params->active == 1)
-		value = 1;
-	pthread_mutex_unlock(&(*params).active_mutex);
-	return (value);
+	pthread_mutex_lock(&params->writing);
+	if (reason == death)
+		printf("%lld %d died\n",
+			get_current_time() - cur_philo->params->start_time, cur_philo->id);
+	if (reason == feast)
+		printf("%lld everyone ate enough\n",
+			get_current_time() - cur_philo->params->start_time);
+	if (reason == error)
+		printf(EXEC_ERROR);
+	pthread_mutex_lock(&params->active_mutex);
+	params->active = false;
+	pthread_mutex_unlock(&params->active_mutex);
 }
 
-void	kill_routine(t_params *params)
+static void	monitor(t_params *params)
 {
-	pthread_mutex_lock(&(*params).active_mutex);
-	params->active = 0;
-	pthread_mutex_unlock(&(*params).active_mutex);
-}
+	t_philo	*tmp;
+	int		full_philos;
 
-void	check_endof_routine(t_philo *philo, t_params *params)
-{
-	t_philo	*first;
-
-	first = philo;
-	while (check_active_routine(params) == 1)
+	tmp = params->philos;
+	full_philos = 0;
+	while (tmp)
 	{
-		philo = first;
-		while (philo)
+		if (!is_philo_alive(tmp))
+			return (stop_sim(params, tmp, death));
+		if (is_philo_full(tmp))
+			full_philos++;
+		if (full_philos == params->philos_count)
+			return (stop_sim(params, tmp, feast));
+		tmp = tmp->next_philo;
+		if (!tmp)
 		{
-			if (check_death(philo) == 0)
-			{
-				print_message(philo, "died");
-				kill_routine(params);
-				break ;
-			}
-			if (check_full(philo) == 1)
-			{
-				set_philo_full(philo, 2);
-				params->full_philos++;
-			}
-			philo = philo->next_philo;
-			usleep(10);
+			full_philos = 0;
+			tmp = params->philos;
 		}
-		if (params->full_philos == params->philos)
-			break ;
 	}
 }
 
 int	main(int ac, char **av)
 {
 	t_params	params;
-	t_philo		*philo;
-	t_philo		*first;
 
 	if (ac > 6 || ac < 5)
-		return (!!ft_error("Error\nInvalid arguments\n"));
+		return (!ft_error(INVALID_ARGSC));
 	if (!init_params(ac, av, &params))
-		return (!!ft_error("Error\nInvalid arguments\n"));
-	philo = set_philos(&params);
-	if (!philo)
+		return (!ft_error(INVALID_ARGS));
+	params.philos = create_philos(&params);
+	if (!params.philos)
+		return (!ft_error(PHIL_ERROR));
+	if (!start_philos(&params))
+		stop_sim(&params, NULL, error);
+	else
 	{
-		pthread_mutex_destroy(&params.active_mutex);
-		pthread_mutex_destroy(&params.writing);
-		return (!!ft_error("Error\nError when creating philos\n"));
+		mssleep(params.time_td / 2, NULL);
+		monitor(&params);
 	}
-	if (start_routine(philo) == 0)
-		return (!!ft_error("Error\nError when creating threads\n"));
-	check_endof_routine(philo, &params);
-	first = philo;
-	while (philo)
-	{
-		pthread_join(philo->thread, NULL);
-		philo = philo->next_philo;
-	}
-	free_all(first);
+	pthread_mutex_unlock(&params.writing);
+	close_params(&params);
 }

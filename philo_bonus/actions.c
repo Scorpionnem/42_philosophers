@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 14:30:05 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/01 12:56:31 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 11:44:55 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,13 @@ static void	release_fork(t_params *params)
 void	eat(t_params *params, t_philo *philo)
 {
 	print_message(MSG_EAT, params, philo);
+	sem_wait(philo->check_auto);
 	if (mssleep(params->time_te, philo))
 	{
 		philo->times_eaten++;
 		philo->last_eat = get_current_time();
 	}
+	sem_post(philo->check_auto);
 	release_fork(params);
 	release_fork(params);
 }

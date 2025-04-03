@@ -6,7 +6,7 @@
 #    By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/31 10:49:27 by mbatty            #+#    #+#              #
-#    Updated: 2025/03/31 10:54:25 by mbatty           ###   ########.fr        #
+#    Updated: 2025/04/03 11:40:48 by mbatty           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SOURCES =	main.c params.c utils.c time_utils.c actions.c philos.c
 OBJECTS = $(SOURCES:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
 %.o : %.c
 		@$(CC) $(CFLAGS) -o $@ -c $<

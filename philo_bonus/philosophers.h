@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 09:47:53 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/01 12:54:14 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 11:44:19 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_params
 
 typedef struct s_philo
 {
+	sem_t			*check_auto;
 	int				is_running;
 	long long int	last_eat;
 	int				times_eaten;
@@ -56,6 +57,7 @@ typedef struct s_philo
 # define PRINT_SEM "/print_semaphore"
 # define RUN_SEM "/run_semaphore"
 # define KILL_SEM "/kill_semaphore"
+# define CHECK_AUTO "/check_auto_semaphore"
 
 # define INVALID_ARGSC "Error\nInvalid amount of arguments\n"
 # define INVALID_ARGS "Error\nInvalid arguments\n"

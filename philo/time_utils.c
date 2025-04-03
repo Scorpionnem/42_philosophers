@@ -1,36 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_utils.c                                       :+:      :+:    :+:   */
+/*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 17:05:36 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/29 12:56:44 by mbatty           ###   ########.fr       */
+/*   Created: 2025/03/29 13:28:47 by mbatty            #+#    #+#             */
+/*   Updated: 2025/04/02 16:17:53 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	*ft_error(char *str)
+int	mssleep(int time, t_philo *philo)
 {
-	printf("%s", str);
-	return (NULL);
+	long long int	start;
+	int				i;
+
+	i = 0;
+	start = get_current_time();
+	while (get_current_time() - start < time)
+	{
+		usleep(10);
+		if (philo && !is_sim_active(philo))
+			return (0);
+	}
+	return (1);
 }
 
-void	free_all(t_philo *philo)
+long long int	get_current_time(void)
 {
-	t_philo	*temp;
+	struct timeval	time;
+	long int		currenttime;
 
-	while (philo)
-	{
-		pthread_mutex_destroy(&(*philo).right_fork->mutex);
-		pthread_mutex_destroy(&(*philo).full_mutex);
-		pthread_mutex_destroy(&(*philo).dead_mutex);
-		pthread_mutex_destroy(&(*philo).last_eaten_mutex);
-		free(philo->right_fork);
-		temp = philo;
-		philo = philo->next_philo;
-		free(temp);
-	}
+	gettimeofday(&time, NULL);
+	currenttime = (time.tv_usec / 1000) + (time.tv_sec * 1000);
+	return (currenttime);
 }

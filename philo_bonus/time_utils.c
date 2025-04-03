@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:28:47 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/01 12:54:01 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/02 12:15:09 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	mssleep(int time, t_philo *philo)
 	(void)philo;
 	i = 0;
 	start = get_current_time();
-	while (get_current_time() - start <= time)
+	while (get_current_time() - start < time)
 	{
 		usleep(10);
 		if (!philo->is_running)

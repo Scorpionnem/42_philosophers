@@ -5,14 +5,23 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/03/31 10:52:09 by mbatty            #+#    #+#              #
-#    Updated: 2025/03/31 10:52:10 by mbatty           ###   ########.fr        #
+#    Created: 2025/03/31 10:49:27 by mbatty            #+#    #+#              #
+#    Updated: 2025/04/03 10:15:47 by mbatty           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SOURCES =	main.c init_struct.c lst_philo.c utils.c routine.c routine_utils.c exit_utils.c philo_utils.c
+SOURCES =	main.c \
+			params.c \
+			utils.c \
+			time_utils.c \
+			actions.c \
+			philos.c \
+			lst_philo.c \
+			mutex.c \
+			philo_checks.c \
+			philo_creation.c
 
 OBJECTS = $(SOURCES:.c=.o)
 

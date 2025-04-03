@@ -5,48 +5,51 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 11:34:19 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/29 17:14:45 by mbatty           ###   ########.fr       */
+/*   Created: 2025/03/29 13:27:22 by mbatty            #+#    #+#             */
+/*   Updated: 2025/04/02 16:38:07 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	mssleep(int time, t_philo *philo)
+void	free_all(t_philo *philo)
 {
-	int				i;
-	long long int	start;
+	t_philo	*temp;
 
-	(void)philo;
-	i = 0;
-	start = get_current_time();
-	while (get_current_time() - start <= time)
+	while (philo)
 	{
-		usleep(10);
-		if (check_death(philo) == 0)
-			return ;
+		pthread_mutex_destroy(&philo->right_fork->fork);
+		pthread_mutex_destroy(&philo->is_full_mutex);
+		pthread_mutex_destroy(&philo->is_dead_mutex);
+		pthread_mutex_destroy(&philo->last_meal_mutex);
+		temp = philo;
+		philo = philo->next_philo;
+		free(temp->right_fork);
+		free(temp);
 	}
 }
 
-void	print_message(t_philo *philo, char *str)
+void	*ft_error(const char *str)
 {
-	long int	time;
-
-	time = get_current_time() - philo->params->start_time;
-	pthread_mutex_lock(&(*philo).params->writing);
-	if (check_active_routine(philo->params) == 1)
-		printf("%lu %d %s\n", time, philo->philo_id, str);
-	pthread_mutex_unlock(&(*philo).params->writing);
+	printf("%s", str);
+	return (NULL);
 }
 
-long long int	get_current_time(void)
+int	ft_isdigitstr(const char *str)
 {
-	struct timeval	time;
-	long int		currenttime;
+	int	i;
 
-	gettimeofday(&time, NULL);
-	currenttime = (time.tv_usec / 1000) + (time.tv_sec * 1000);
-	return (currenttime);
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
 }
 
 long long int	ft_atoll(const char *nptr)
@@ -74,21 +77,4 @@ long long int	ft_atoll(const char *nptr)
 	if (minus_count == 1)
 		return (nb * -1);
 	return (nb);
-}
-
-int	ft_isdigitstr(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] >= '0' && str[i] <= '9')
-			i++;
-		else
-			return (0);
-	}
-	return (1);
 }
