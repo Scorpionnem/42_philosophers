@@ -6,11 +6,25 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:25:26 by mbatty            #+#    #+#             */
-/*   Updated: 2025/03/29 13:41:23 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 13:19:55 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+int	open_other_sems(t_params *params)
+{
+	params->wait_start = open_sem(WAIT_SEM, 0);
+	if (!params->wait_start)
+	{
+		sem_close(params->forks);
+		sem_close(params->print);
+		sem_close(params->is_running);
+		sem_close(params->touch_kill);
+		return (!!ft_error(SEM_FAIL_WAIT));
+	}
+	return (1);
+}
 
 static int	parse_params(int ac, char **av)
 {

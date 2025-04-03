@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:28:47 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/03 12:25:07 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 13:17:52 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	mssleep(int time, t_philo *philo)
 	while (get_current_time() - start < time)
 	{
 		usleep(10);
-		if (!philo->is_running || get_current_time() - philo->last_eat >= philo->params->time_td)
+		if (!philo->is_running
+			|| get_current_time() - philo->last_eat >= philo->params->time_td)
 			return (0);
 	}
 	return (1);

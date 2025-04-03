@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 09:47:53 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/03 12:10:11 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 13:20:10 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_philo
 
 //params.c
 int				init_params(int ac, char **av, t_params *params);
+int				open_other_sems(t_params *params);
 
 //utils.c
 void			*ft_error(const char *str);

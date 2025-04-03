@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 13:01:07 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/03 12:33:37 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 13:19:50 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,6 @@ static int	start_philos(t_params *params)
 	params->kill = 0;
 	sem_post(params->touch_kill);
 	sem_post(params->is_running);
-	return (1);
-}
-
-static int	open_other_sems(t_params *params)
-{
-	params->wait_start = open_sem(WAIT_SEM, 0);
-	if (!params->wait_start)
-	{
-		sem_close(params->forks);
-		sem_close(params->print);
-		sem_close(params->is_running);
-		sem_close(params->touch_kill);
-		return (!!ft_error(SEM_FAIL_WAIT));
-	}
 	return (1);
 }
 
