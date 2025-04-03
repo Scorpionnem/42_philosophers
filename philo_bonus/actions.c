@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 14:30:05 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/03 11:44:55 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 12:33:40 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	eat(t_params *params, t_philo *philo)
 	sem_wait(philo->check_auto);
 	if (mssleep(params->time_te, philo))
 	{
+		// if ()
+		// 	printf("I AM SUPOSED TO DIE\n");
 		philo->times_eaten++;
 		philo->last_eat = get_current_time();
 	}

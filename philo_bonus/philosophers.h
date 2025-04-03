@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 09:47:53 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/03 11:44:19 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 12:10:11 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_params
 	sem_t			*is_running;
 	sem_t			*print;
 	sem_t			*touch_kill;
+	sem_t			*wait_start;
 	int				active;
 	int				philos;
 	int				eat_amount;
@@ -58,6 +59,7 @@ typedef struct s_philo
 # define RUN_SEM "/run_semaphore"
 # define KILL_SEM "/kill_semaphore"
 # define CHECK_AUTO "/check_auto_semaphore"
+# define WAIT_SEM "/wait_semaphore"
 
 # define INVALID_ARGSC "Error\nInvalid amount of arguments\n"
 # define INVALID_ARGS "Error\nInvalid arguments\n"
@@ -65,6 +67,7 @@ typedef struct s_philo
 # define SEM_FAIL_PRINT "Error\nFailed to open print semaphore\n"
 # define SEM_FAIL_DEATH "Error\nFailed to open death check semaphore\n"
 # define SEM_FAIL_KILL "Error\nFailed to open kill check semaphore\n"
+# define SEM_FAIL_WAIT "Error\nFailed to open wait semaphore\n"
 # define EXEC_ERROR "Error\nAn error occured when executing the program\n"
 
 # define MSG_FORK "has taken a fork"

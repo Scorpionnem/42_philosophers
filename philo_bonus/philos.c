@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:29:04 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/03 11:45:45 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/03 12:33:34 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static void	*philo_checkhimself(void *ptr)
 		sem_wait(philo->check_auto);
 		if (get_current_time() - philo->last_eat >= philo->params->time_td)
 		{
-			print_message(MSG_DIED, philo->params, philo);
+			sem_wait(philo->params->print);
+			printf("%lld %d died\n",
+				get_current_time() - philo->params->start_time,
+				philo->params->id + 1);
 			sem_post(philo->params->is_running);
 			break ;
 		}
@@ -75,6 +78,8 @@ int	philo_routine(t_params *params, int id)
 	philo = init_philo(params, id);
 	if (!start_threads(&philo))
 		exit(0);
+	sem_wait(params->wait_start);
+	sem_post(params->wait_start);
 	if (params->id % 2)
 		mssleep(1, &philo);
 	while (philo.is_running)
