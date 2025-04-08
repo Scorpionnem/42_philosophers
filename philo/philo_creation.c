@@ -6,7 +6,7 @@
 /*   By: mbatty <mbatty@student.42angouleme.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:14:34 by mbatty            #+#    #+#             */
-/*   Updated: 2025/04/03 11:05:00 by mbatty           ###   ########.fr       */
+/*   Updated: 2025/04/08 11:49:34 by mbatty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_philo	*new_philo(t_params *params, int id)
 	}
 	if (!init_mutexes_philo(philo))
 	{
-		free(fork);
+		free(philo->right_fork);
 		free(philo);
 		return (NULL);
 	}
