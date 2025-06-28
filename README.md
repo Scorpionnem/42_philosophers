@@ -1,3 +1,5 @@
+42 Grade: 125/100
+
 README in progress, I will add tips and tricks about the project later on maybe idk
 
 Philosophers, mandatory part:
